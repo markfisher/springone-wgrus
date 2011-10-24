@@ -5,7 +5,7 @@ public class Order {
 	private final long id;
 	private int quantity;
 	private String productId;
-	private String email;
+	private String customerId;
 
 	public Order(long id) {
 		this.id = id;
@@ -31,12 +31,16 @@ public class Order {
 		this.productId = productId;
 	}
 	
-	public String getEmail() {
-		return email;
+	public String getCustomerId() {
+		return customerId;
 	}
 	
-	public void setEmail(String email) {
-		this.email = email;
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+	public String toString() {
+		return "Order #" + this.id + ": " + this.quantity + " " + this.productId + "s for " + this.customerId;
 	}
 
 }
