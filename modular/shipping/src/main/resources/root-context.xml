@@ -30,7 +30,7 @@
 	<int:chain input-channel="orderChannel">
 		<int:claim-check-out/>
 		<int:json-to-object-transformer type="org.wgrus.Order"/>
-		<int:object-to-string-transformer/>
+		<!-- int:object-to-string-transformer/ -->
 		<int:service-activator ref="shippingService" method="ship"/>
 	</int:chain>
 

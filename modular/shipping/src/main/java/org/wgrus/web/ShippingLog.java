@@ -29,4 +29,10 @@ public class ShippingLog {
 		return "orders";
 	}
 
+	@RequestMapping("/clean")
+	public String clean() {
+		this.mongoTemplate.dropCollection("orders");
+		return "orders";
+	}
+
 }
