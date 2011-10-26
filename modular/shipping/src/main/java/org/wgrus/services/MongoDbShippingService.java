@@ -1,7 +1,5 @@
 package org.wgrus.services;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,13 +14,6 @@ public class MongoDbShippingService implements ShippingService {
 	@Autowired
 	public MongoDbShippingService(MongoDbFactory mongoDbFactory) {
 		this.mongoTemplate = new MongoTemplate(mongoDbFactory);
-	}
-
-	@PostConstruct
-	public void initialize() {
-		if (!this.mongoTemplate.collectionExists("orders")) {
-			this.mongoTemplate.createCollection("orders");
-		}
 	}
 
 	@Override
