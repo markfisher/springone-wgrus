@@ -2,6 +2,9 @@ package org.wgrus.services;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class WidgetInventoryService implements InventoryService {
 
 	private final AtomicInteger count = new AtomicInteger(100);

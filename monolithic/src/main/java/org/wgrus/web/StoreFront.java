@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,14 +23,11 @@ public class StoreFront {
 
 	private final AtomicLong orderIdCounter = new AtomicLong(1);
 
-	//@Autowired @Qualifier("orderChannel")
-	//private MessageChannel orderChannel;
+	private volatile BillingService billingService;
 
-	private BillingService billingService;
+	private volatile Map<String, InventoryService> inventoryServices;
 
-	private Map<String, InventoryService> inventoryServices;
-
-	private OrderService orderService;
+	private volatile OrderService orderService;
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String displayForm() {
@@ -65,8 +61,6 @@ public class StoreFront {
 		Assert.notNull(inventoryService, "cannot find InventoryService for: " + productId);
 		Assert.state(inventoryService.reserve(quantity), "not enough " + productId + "s in stock");
 		this.orderService.placeOrder(order);
-		//MessagingTemplate template = new MessagingTemplate(this.orderChannel);
-		//template.convertAndSend(order);
 		model.put("orderId", orderId);
 		return "order";
 	}

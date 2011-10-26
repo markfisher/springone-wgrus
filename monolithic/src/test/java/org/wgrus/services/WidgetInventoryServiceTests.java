@@ -1,10 +1,9 @@
-package org.wgrus;
+package org.wgrus.services;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.wgrus.services.WidgetInventoryService;
 
 public class WidgetInventoryServiceTests {
 

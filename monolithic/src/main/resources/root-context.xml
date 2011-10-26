@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
 	xmlns:amqp="http://www.springframework.org/schema/integration/amqp"
 	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
 	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:redis="http://www.springframework.org/schema/data/redis"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"
@@ -13,11 +15,13 @@
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.1.xsd
 		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+		http://www.springframework.org/schema/data/redis http://www.springframework.org/schema/data/redis/spring-redis-1.0.xsd
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
+<!--
 	<int:channel id="orderChannel"/>
 
 	<int:object-to-json-transformer input-channel="orderChannel" output-channel="jsonOrders"/>
@@ -37,19 +41,32 @@
 	<rabbit:admin connection-factory="rabbitConnectionFactory"/>
 
 	<rabbit:template id="rabbitTemplate" connection-factory="rabbitConnectionFactory"/>
+-->
+
+
+	<bean id="widgetInventoryService" class="org.wgrus.services.RedisInventoryService">
+		<constructor-arg value="widget"/>
+		<constructor-arg ref="redisConnectionFactory"/>
+	</bean> 
+
+	<bean id="gadgetInventoryService" class="org.wgrus.services.RedisInventoryService">
+		<constructor-arg value="gadget"/>
+		<constructor-arg ref="redisConnectionFactory"/>
+	</bean> 
 
 	<beans profile="default">
+		<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"/>
 		<mongo:db-factory id="mongoDbFactory"/>
-		<rabbit:connection-factory id="rabbitConnectionFactory"/>
+		<!-- <rabbit:connection-factory id="rabbitConnectionFactory"/> -->
 	</beans>
 
 	<beans profile="cloud">
+		<cloud:redis-connection-factory id="redisConnectionFactory"/>
 		<cloud:mongo-db-factory id="mongoDbFactory"/>
-		<cloud:rabbit-connection-factory id="rabbitConnectionFactory"/>
+		<!-- <cloud:rabbit-connection-factory id="rabbitConnectionFactory"/> -->
 	</beans>
 
 </beans>
-
 
 
 
