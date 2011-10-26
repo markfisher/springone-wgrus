@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="storeFront" class="org.wgrus.web.StoreFront"/>
+
+	<bean id="gadgetInventoryService" class="org.wgrus.services.GadgetInventoryService"/>
+
+	<bean id="widgetInventoryService" class="org.wgrus.services.WidgetInventoryService"/>
+
+	<bean id="billingService" class="org.wgrus.services.StubBillingService"/>
+
+	<bean id="orderService" class="org.wgrus.web.StubOrderService"/>
+
+</beans>

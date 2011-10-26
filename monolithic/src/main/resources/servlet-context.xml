@@ -13,7 +13,7 @@
 
 	<mvc:annotation-driven />
 
-	<context:component-scan base-package="org.wgrus.web" />
+	<context:component-scan base-package="org.wgrus.web, org.wgrus.services" />
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />

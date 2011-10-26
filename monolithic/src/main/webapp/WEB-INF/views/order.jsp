@@ -34,10 +34,8 @@
 
 				<form method="post">
 					<ol>
-						<li><label for="email">Email</label> <input id="email"
-							type="text" name="email" /></li>
-						<li><label for="quantity">Quantity</label> <select
-							id="quantity" name="quantity">
+						<li><label for="customerId">Customer</label> <input id="customer" type="text" name="customerId" /></li>
+						<li><label for="quantity">Quantity</label> <select id="quantity" name="quantity">
 								<option>1</option>
 								<option>2</option>
 								<option>3</option>
@@ -48,15 +46,23 @@
 								<option>8</option>
 								<option>9</option>
 								<option>10</option>
+								<option>20</option>
+								<option>30</option>
+								<option>40</option>
+								<option>50</option>
+								<option>60</option>
+								<option>70</option>
+								<option>80</option>
+								<option>90</option>
+								<option>100</option>
 						</select>
 						</li>
-						<li><label for="product">Product</label> <select id="product"
-							name="productId">
+						<li><label for="product">Product</label> <select id="product" name="productId">
 								<option>widget</option>
 								<option>gadget</option>
 						</select>
 						</li>
-						<li class="buttonGroup"><input type="submit" value="Submit">
+						<li class="buttonGroup"><input type="submit" value="Submit"/>
 						</li>
 					</ol>
 				</form>

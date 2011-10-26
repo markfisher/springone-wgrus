@@ -1,15 +1,13 @@
-package org.wgrus;
+package org.wgrus.web;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
 import org.wgrus.services.GadgetInventoryService;
-import org.wgrus.services.StubBillingService;
 import org.wgrus.services.InventoryService;
-import org.wgrus.services.StubOrderService;
+import org.wgrus.services.StubBillingService;
 import org.wgrus.services.WidgetInventoryService;
-import org.wgrus.web.StoreFront;
 
 public class StoreFrontUnitTests {
 
@@ -23,10 +21,14 @@ public class StoreFrontUnitTests {
 		inventoryServices.put("widgetInventoryService", new WidgetInventoryService());
 		store.setInventoryServices(inventoryServices);
 		Map<String, Object> model = new HashMap<String, Object>(); 
-		store.placeOrder("joe", 25, "widget", model);
-		store.placeOrder("joe", 25, "widget", model);
-		store.placeOrder("joe", 25, "widget", model);
-		store.placeOrder("bad", 25, "widget", model);
+		store.placeOrder("joe", 80, "widget", model);
+		try {
+			store.placeOrder("joe", 21, "widget", model);
+		}
+		catch (IllegalStateException e) {
+			// not enough in stock
+		}
+		store.placeOrder("joe", 15, "widget", model);
 	}
 
 }
