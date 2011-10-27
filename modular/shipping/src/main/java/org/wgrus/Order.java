@@ -6,6 +6,7 @@ public class Order {
 	private int quantity;
 	private String productId;
 	private String customerId;
+	private boolean approved;
 	private boolean reserved;
 
 	public void setId(long id) {
@@ -46,6 +47,14 @@ public class Order {
 
 	public void setReserved(boolean reserved) {
 		this.reserved = reserved;
+	}
+
+	public boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(boolean approved) {
+		this.approved = approved;
 	}
 
 	public String toString() {

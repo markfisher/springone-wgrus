@@ -18,7 +18,7 @@ public class MongoDbShippingService implements ShippingService {
 
 	@Override
 	public void ship(Order order) {
-		if (order.getReserved()) {
+		if (order.getApproved() && order.getReserved()) {
 			System.out.println("shipping order: " + order);
 			this.mongoTemplate.save(order, "orders");
 		}

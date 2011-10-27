@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:int="http://www.springframework.org/schema/integration"
 	xmlns:amqp="http://www.springframework.org/schema/integration/amqp"
+	xmlns:rest="http://www.springframework.org/schema/integration/http"
 	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
 	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xmlns:redis="http://www.springframework.org/schema/data/redis"
@@ -12,6 +13,7 @@
 	xmlns:cloud="http://schema.cloudfoundry.org/spring"
 	xsi:schemaLocation="http://schema.cloudfoundry.org/spring http://schema.cloudfoundry.org/spring/cloudfoundry-spring-0.8.xsd
 		http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
 		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
@@ -32,12 +34,19 @@
 
 	<int:chain input-channel="inventoryChannel" output-channel="amqpOut">
 		<int:json-to-object-transformer type="org.wgrus.Order"/>
+		<int:enricher request-channel="creditCheck">
+			<int:property name="approved" expression="payload.startsWith('OK')"/>
+		</int:enricher>
 		<int:enricher request-channel="inventoryRouter">
 			<int:property name="reserved" expression="payload"/>
 		</int:enricher>
 		<int:object-to-json-transformer/>
 		<int:claim-check-in/>
 	</int:chain>
+
+	<int:channel id="creditCheck"/>
+
+	<int:service-activator input-channel="creditCheck" expression="@creditService.check(payload.customerId)"/>
 
 	<int:router input-channel="inventoryRouter" expression="payload.productId + 'Inventory'"/>
 
@@ -69,6 +78,8 @@
 
 	<rabbit:admin connection-factory="rabbitConnectionFactory"/>
 
+	<bean id="creditService" class="org.wgrus.services.CreditService"/>
+
 	<beans profile="default">
 		<mongo:db-factory id="mongoDbFactory"/>
 		<rabbit:connection-factory id="rabbitConnectionFactory"/>
@@ -81,4 +92,11 @@
 		<cloud:redis-connection-factory id="redisConnectionFactory"/>
 	</beans>
 
+	<!--
+	<rest:outbound-gateway url="http://wgrus-billing.cloudfoundry.com/authorize/{customer}" request-channel="creditCheck"
+			expected-response-type="java.lang.String">
+		<rest:uri-variable name="customer" expression="payload.getCustomerId()"/>
+	</rest:outbound-gateway>
+	-->
+	
 </beans>

@@ -37,5 +37,4 @@ public class RedisInventoryService implements InventoryService {
 			list.add(new Random().nextLong());
 		}
 	}
-
 }
