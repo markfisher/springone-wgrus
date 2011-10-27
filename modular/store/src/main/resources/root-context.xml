@@ -25,13 +25,13 @@
 
 	<int:claim-check-in input-channel="jsonOrders" output-channel="amqpOut"/>
 
-	<amqp:outbound-channel-adapter id="amqpOut" amqp-template="rabbitTemplate" routing-key="orders.store"/>
+	<amqp:outbound-channel-adapter id="amqpOut" amqp-template="rabbitTemplate" routing-key="orders"/>
 
 	<bean id="messageStore" class="org.springframework.integration.mongodb.store.MongoDbMessageStore">
 		<constructor-arg ref="mongoDbFactory"/>
 	</bean>
 
-	<rabbit:queue name="orders.store"/>
+	<rabbit:queue name="orders"/>
 
 	<rabbit:admin connection-factory="rabbitConnectionFactory"/>
 

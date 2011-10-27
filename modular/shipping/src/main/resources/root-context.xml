@@ -21,16 +21,15 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
+	<context:component-scan base-package="org.wgrus.services"/>
+
 	<amqp:inbound-channel-adapter channel="orderChannel"
 		connection-factory="rabbitConnectionFactory"
-		queue-names="orders.store"/>
-		
-	<context:component-scan base-package="org.wgrus.services"/>
+		queue-names="orders"/>
 
 	<int:chain input-channel="orderChannel">
 		<int:claim-check-out/>
 		<int:json-to-object-transformer type="org.wgrus.Order"/>
-		<!-- int:object-to-string-transformer/ -->
 		<int:service-activator ref="shippingService" method="ship"/>
 	</int:chain>
 
@@ -38,7 +37,7 @@
 		<constructor-arg ref="mongoDbFactory"/>
 	</bean>
 
-	<rabbit:queue name="orders.store"/>
+	<rabbit:queue name="orders"/>
 
 	<rabbit:admin connection-factory="rabbitConnectionFactory"/>
 
