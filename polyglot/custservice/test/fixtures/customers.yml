@@ -1,6 +1,8 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  id: 1
+  customer_id: MyString
   first_name: MyString
   last_name: MyString
   street_address: MyString
@@ -11,6 +13,8 @@ one:
   credit_score: 1
 
 two:
+  id: 1
+  customer_id: MyString
   first_name: MyString
   last_name: MyString
   street_address: MyString
