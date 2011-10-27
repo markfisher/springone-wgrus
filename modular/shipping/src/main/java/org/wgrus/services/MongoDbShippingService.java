@@ -18,7 +18,12 @@ public class MongoDbShippingService implements ShippingService {
 
 	@Override
 	public void ship(Order order) {
-		System.out.println("shipping order: " + order);
+		if (order.getReserved()) {
+			System.out.println("shipping order: " + order);
+		}
+		else {
+			System.out.println("cannot ship order (out of stock or not authorized): " + order);
+		}
 		this.mongoTemplate.save(order, "orders");
 	}
 
