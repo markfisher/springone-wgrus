@@ -27,7 +27,7 @@ public class RedisInventoryService implements InventoryService {
 		}
 		long remaining = this.count.addAndGet(-quantity);
 		if (remaining < 0) {
-			this.count.addAndGet(remaining + quantity);
+			this.count.addAndGet(quantity);
 			return false;
 		}
 		return true;
@@ -39,4 +39,5 @@ public class RedisInventoryService implements InventoryService {
 			list.add(new Random().nextLong());
 		}
 	}
+
 }
