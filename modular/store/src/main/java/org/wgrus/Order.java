@@ -6,6 +6,7 @@ public class Order {
 	private int quantity;
 	private String productId;
 	private String customerId;
+	private boolean reserved;
 
 	public void setId(long id) {
 		this.id = id;
@@ -37,6 +38,14 @@ public class Order {
 	
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
+	}
+
+	public boolean getReserved() {
+		return reserved;
+	}
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
 	}
 
 	public String toString() {

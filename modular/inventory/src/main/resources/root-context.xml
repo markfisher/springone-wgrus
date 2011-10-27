@@ -21,38 +21,64 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-	<context:component-scan base-package="org.wgrus.services"/>
-
 	<amqp:inbound-channel-adapter channel="orderChannel"
 		connection-factory="rabbitConnectionFactory"
-		queue-names="inventory"
+		queue-names="orders"
 		error-channel="errorLogger"/>
-
-	<int:claim-check-out input-channel="orderChannel" output-channel="jsonOrders" remove-message="true"/>
 
 	<int:logging-channel-adapter id="errorLogger" log-full-message="true" level="WARN"/>
 
-	<int:chain input-channel="jsonOrders">
+	<int:claim-check-out input-channel="orderChannel" remove-message="true" output-channel="inventoryChannel"/>
+
+	<int:chain input-channel="inventoryChannel" output-channel="amqpOut">
 		<int:json-to-object-transformer type="org.wgrus.Order"/>
-		<int:service-activator ref="shippingService" method="ship"/>
+		<int:enricher request-channel="inventoryRouter">
+			<int:property name="reserved" expression="payload"/>
+		</int:enricher>
+		<int:object-to-json-transformer/>
+		<int:claim-check-in/>
 	</int:chain>
+
+	<int:router input-channel="inventoryRouter" expression="payload.productId + 'Inventory'"/>
+
+	<int:service-activator input-channel="widgetInventory" expression="@widgetInventoryService.reserve(payload.quantity)"/>
+
+	<int:service-activator input-channel="gadgetInventory" expression="@gadgetInventoryService.reserve(payload.quantity)"/>
+
+	<bean id="widgetInventoryService" class="org.wgrus.services.RedisInventoryService">
+		<constructor-arg value="widgets"/>
+		<constructor-arg ref="redisConnectionFactory"/>
+	</bean>
+
+	<bean id="gadgetInventoryService" class="org.wgrus.services.RedisInventoryService">
+		<constructor-arg value="gadgets"/>
+		<constructor-arg ref="redisConnectionFactory"/>
+	</bean>
+
+	<amqp:outbound-channel-adapter id="amqpOut" amqp-template="rabbitTemplate" routing-key="inventory"/>
 
 	<bean id="messageStore" class="org.springframework.integration.mongodb.store.MongoDbMessageStore">
 		<constructor-arg ref="mongoDbFactory"/>
 	</bean>
 
+	<rabbit:queue name="orders"/>
+
 	<rabbit:queue name="inventory"/>
+
+	<rabbit:template id="rabbitTemplate" connection-factory="rabbitConnectionFactory"/>
 
 	<rabbit:admin connection-factory="rabbitConnectionFactory"/>
 
 	<beans profile="default">
 		<mongo:db-factory id="mongoDbFactory"/>
 		<rabbit:connection-factory id="rabbitConnectionFactory"/>
+		<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"/>
 	</beans>
 
 	<beans profile="cloud">
 		<cloud:mongo-db-factory id="mongoDbFactory"/>
 		<cloud:rabbit-connection-factory id="rabbitConnectionFactory"/>
+		<cloud:redis-connection-factory id="redisConnectionFactory"/>
 	</beans>
 
 </beans>
