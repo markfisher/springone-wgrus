@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>WGRUS Store</title>
+<title>WGRUS Status Monitor</title>
 <link rel="stylesheet" href="static/css/main.css" type="text/css"></link>
 <link rel="stylesheet" href="static/css/colors.css" type="text/css"></link>
 <link rel="stylesheet" href="static/css/local.css" type="text/css"></link>
@@ -13,7 +13,7 @@
 		<div id="header">
 			<div id="name-and-company">
 				<div id='site-name'>
-					<a href="" title="WGRUS Monitor" rel="home">WGRUS Monitor</a>
+					<a href="" title="WGRUS Status Monitor" rel="home">WGRUS Status Monitor</a>
 				</div>
 				<div id='company-name'>
 					<a href="http://www.springsource.org/spring-integration"
