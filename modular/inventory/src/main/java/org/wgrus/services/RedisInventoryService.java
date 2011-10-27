@@ -1,5 +1,9 @@
 package org.wgrus.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 
@@ -17,12 +21,22 @@ public class RedisInventoryService implements InventoryService {
 	}
 
 	public boolean reserve(long quantity) {
+		if (quantity == 50) { crash(); }
+		if (this.count.get() < quantity) {
+			return false;
+		}
 		long remaining = this.count.addAndGet(-quantity);
 		if (remaining < 0) {
-			this.count.addAndGet(quantity);
+			this.count.addAndGet(quantity - remaining);
 			return false;
 		}
 		return true;
 	}
 
+	private void crash() {
+		List<Long> list = new ArrayList<Long>();
+		while (true) {
+			list.add(new Random().nextLong());
+		}
+	}
 }
