@@ -20,11 +20,12 @@ public class MongoDbShippingService implements ShippingService {
 	public void ship(Order order) {
 		if (order.getReserved()) {
 			System.out.println("shipping order: " + order);
+			this.mongoTemplate.save(order, "orders");
 		}
 		else {
 			System.out.println("cannot ship order (out of stock or not authorized): " + order);
+			this.mongoTemplate.save(order, "rejects");
 		}
-		this.mongoTemplate.save(order, "orders");
 	}
 
 }
