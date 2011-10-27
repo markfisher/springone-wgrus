@@ -43,13 +43,14 @@ public class ChartController {
 	
 	private DefaultCategoryDataset getOrderData() {
 		DefaultCategoryDataset ds = null;
-		long pending = mongoTemplate.getCollection("pending").count();
-		long processed = mongoTemplate.getCollection("processed").count();
-		System.out.println("****** " + pending + "/" + processed);
+		long messages = mongoTemplate.getCollection("messages").count();
+		long orders = mongoTemplate.getCollection("orders").count();
+		long rejects = mongoTemplate.getCollection("rejects").count();
 		try {
 			ds = new DefaultCategoryDataset();
-			ds.addValue(pending, "Orders", "Pending");
-			ds.addValue(processed, "Orders", "Processed");
+			ds.addValue(messages, "Orders", "Pending");
+			ds.addValue(orders, "Orders", "Processed");
+			ds.addValue(rejects, "Orders", "Rejects");
 			return ds;
 
 		} catch (Exception e) {
