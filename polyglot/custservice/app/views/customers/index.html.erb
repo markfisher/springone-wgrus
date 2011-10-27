@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th>Id</th>
+    <th>Customer</th>
     <th>First name</th>
     <th>Last name</th>
     <th>Street address</th>
@@ -19,6 +20,7 @@
 <% @customers.each do |customer| %>
   <tr>
     <td><%= customer.id %></td>
+    <td><%= customer.customer_id %></td>
     <td><%= customer.first_name %></td>
     <td><%= customer.last_name %></td>
     <td><%= customer.street_address %></td>

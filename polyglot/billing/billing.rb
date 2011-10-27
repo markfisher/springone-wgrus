@@ -22,7 +22,7 @@ class Billing < Sinatra::Base
   get '/authorize/:id' do  
     db = Mysql2::Client.new(@dbopts)
     @logger.info("AUTH: #{params[:id]}")
-    results = db.query("SELECT creditcard_no, credit_score FROM customers where id = #{params[:id]}")
+    results = db.query("SELECT creditcard_no, credit_score FROM customers where customer_id = #{params[:id]}")
     @logger.info("ROW: #{results.first}")
     if results.first == nil
       "FAIL:NOT_FOUND"

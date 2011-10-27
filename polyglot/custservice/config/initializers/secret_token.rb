@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Custservice::Application.config.secret_token = '7a6c476cc8162f4088135e00afa65573785cb4f4f7b9e55b4b8277e0d90515f20dcd62197062436ae81d9c528784d0e1c429614dd1edcfe7fb0b5f7d863d8d64'
+Custservice::Application.config.secret_token = '497270b83c830c6784e408cf15a76ef5ed7544bd4b6ef5ca891396d5aa8a8d989b5b87d28b21ff9b39ca34fa22aef27ba80337cdb4912be338be55d0139135c6'
