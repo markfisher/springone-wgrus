@@ -11,8 +11,8 @@
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:cloud="http://schema.cloudfoundry.org/spring"
 	xsi:schemaLocation="http://schema.cloudfoundry.org/spring http://schema.cloudfoundry.org/spring/cloudfoundry-spring-0.8.xsd
-		http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp-2.1.xsd
-		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.1.xsd
+		http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
 		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
 		http://www.springframework.org/schema/data/redis http://www.springframework.org/schema/data/redis/spring-redis-1.0.xsd
@@ -25,10 +25,14 @@
 
 	<amqp:inbound-channel-adapter channel="orderChannel"
 		connection-factory="rabbitConnectionFactory"
-		queue-names="orders"/>
+		queue-names="orders"
+		error-channel="errorLogger"/>
 
-	<int:chain input-channel="orderChannel">
-		<int:claim-check-out/>
+	<int:claim-check-out input-channel="orderChannel" output-channel="jsonOrders" remove-message="true"/>
+
+	<int:logging-channel-adapter id="errorLogger" log-full-message="true" level="WARN"/>
+
+	<int:chain input-channel="jsonOrders">
 		<int:json-to-object-transformer type="org.wgrus.Order"/>
 		<int:service-activator ref="shippingService" method="ship"/>
 	</int:chain>
@@ -52,21 +56,3 @@
 	</beans>
 
 </beans>
-
-
-
-
-
-
-
-
-
-
-
-	<!-- int:logging-channel-adapter id="logger" channel="warehouseChannel" level="WARN"/ -->
-
-
-	<!-- 
-		advice-chain="retryInterceptor" />
-	<bean id="retryInterceptor" class="org.springframework.amqp.rabbit.config.StatelessRetryOperationsInterceptorFactoryBean" />
-	-->

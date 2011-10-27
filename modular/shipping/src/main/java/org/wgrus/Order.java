@@ -2,12 +2,12 @@ package org.wgrus;
 
 public class Order {
 
-	private final long id;
+	private long id;
 	private int quantity;
 	private String productId;
 	private String customerId;
 
-	public Order(long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

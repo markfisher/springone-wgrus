@@ -38,7 +38,8 @@ public class StoreFront {
 	@RequestMapping(method=RequestMethod.POST)
 	public String placeOrder(@RequestParam String customerId, @RequestParam int quantity, @RequestParam String productId, Map<String, Object> model) {
 		long orderId = orderIdCounter.getAndIncrement();
-		Order order = new Order(orderId);
+		Order order = new Order();
+		order.setId(orderId);
 		order.setCustomerId(customerId);
 		order.setQuantity(quantity);
 		order.setProductId(productId);

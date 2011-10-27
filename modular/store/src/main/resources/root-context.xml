@@ -48,21 +48,3 @@
 	</beans>
 
 </beans>
-
-
-
-
-
-
-
-	<!--
-	<bean id="messageStore" class="org.springframework.integration.jdbc.JdbcMessageStore">
-		<constructor-arg ref="dataSource"/>
-	</bean>
-
-	<jdbc:initialize-database data-source="dataSource">
-		<jdbc:script location="classpath:setup.sql"/>
-	</jdbc:initialize-database>
-	-->
-	
-	<!-- cloud:data-source id="dataSource"/ -->
