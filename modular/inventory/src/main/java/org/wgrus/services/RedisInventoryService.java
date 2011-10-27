@@ -27,7 +27,7 @@ public class RedisInventoryService implements InventoryService {
 		}
 		long remaining = this.count.addAndGet(-quantity);
 		if (remaining < 0) {
-			this.count.addAndGet(quantity - remaining);
+			this.count.addAndGet(remaining + quantity);
 			return false;
 		}
 		return true;
